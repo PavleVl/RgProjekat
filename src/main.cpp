@@ -257,9 +257,11 @@ int main()
 
     //Orbit settings
     float rot_angle = 0.0f;
-    float spin_angle = 0.0f;
     float orbit_speed = 5.0f;
     float orbit_radius = 15.0f;
+    glm::vec3 tvec    = glm::vec3(orbit_radius, 0.0f, 0.0f);
+    glm::vec3 axis    = glm::vec3(0.0f, 1.0f, 0.0f);
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -322,16 +324,11 @@ int main()
         shaderEarth.setMat4("view", view);
 
         rot_angle  += glm::radians(orbit_speed) / 100.0f;
-        spin_angle += glm::radians(orbit_speed) / 100.0f;
-
-        glm::vec3 tvec    = glm::vec3(orbit_radius, 0.0f, 0.0f);
-        glm::vec3 axis    = glm::vec3(0.0f, 1.0f, 0.0f);
 
         glm::mat4 translate = glm::translate(glm::mat4(1.0f), tvec);
         glm::mat4 rotate    = glm::rotate(glm::mat4(1.0f), rot_angle,   axis);
-        glm::mat4 spin      = glm::rotate(glm::mat4(1.0f), spin_angle , axis);
-
-        model = rotate * translate * spin;
+        
+        model = rotate * translate;
 
         model = glm::scale(model, glm::vec3(0.03f));
 
